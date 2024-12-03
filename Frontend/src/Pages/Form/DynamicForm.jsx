@@ -6,7 +6,7 @@ import formsone from '../../assets/formsone.jpg';
 import formstwo from '../../assets/formstwo.jpg';
 import formsthree from '../../assets/formsthree2.0.jpg';
 import servicio from '../../assets/servicio.png';
-import { FormPage4 } from '../Form/FormPage4';
+import { FormPage4 } from './FormPage4';
 import './DynamicForm.css';
 import { LoginContext } from '../../Context/LoginContext';
 import config from '../../../config';
