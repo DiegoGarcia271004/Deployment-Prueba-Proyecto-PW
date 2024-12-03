@@ -9,7 +9,7 @@ import useUpdate from "../../Hooks/UseUpdate";
 import config from "../../../config";
 import './ConsultorPage.css';
 import { LoginContext, LoginProvider } from "../../Context/LoginContext";
-import Unauthorized from "../../Components/Unauthorized/Unauthorized";
+import Unauthorized from "../../components/Unauthorized/Unauthorized";
 import Navigation from "../../components/Navigation/Navigation";
 import Footer from "../../components/Footer/Footer";
 import { NavLink } from "react-router-dom";

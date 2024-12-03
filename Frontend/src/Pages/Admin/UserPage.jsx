@@ -8,7 +8,7 @@ import AdminNavBar from "../../components/Navigation/AdminNavBar";
 import { LoginContext, LoginProvider } from "../../Context/LoginContext";
 import { FetchContext, FetchProvider } from "../../Context/FetchContext";
 import useFetch from "../../Hooks/UseFetch";
-import Unauthorized from "../../Components/Unauthorized/Unauthorized";
+import Unauthorized from "../../components/Unauthorized/Unauthorized";
 import useDelete from "../../Hooks/UseDelete";
 import './UserPage.css'; 
 import Footer from "../../components/Footer/Footer";

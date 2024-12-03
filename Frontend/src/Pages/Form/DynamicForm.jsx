@@ -11,7 +11,7 @@ import './DynamicForm.css';
 import { LoginContext } from '../../Context/LoginContext';
 import config from '../../../config';
 import { FetchContext } from '../../Context/FetchContext';
-import Unauthorized from '../../Components/Unauthorized/Unauthorized';
+import Unauthorized from '../../components/Unauthorized/Unauthorized';
 
 const DynamicForm = () => {
 
