@@ -1,0 +1,61 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "5173:80"
+    environment:
+      - VITE_BASE_URL_API=${VITE_BASE_URL_API}
+      - ROLE_ADMIN=${ROLE_ADMIN}
+      - ROLE_USER=${ROLE_USER}
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+      - JWT_SECRET_USER=${JWT_SECRET_USER}
+      - JWT_SECRET_ADMIN=${JWT_SECRET_ADMIN}
+      - JWT_SECRET=JWT_SECRET
+      - PAYPAL_API_CLIENT=${PAYPAL_API_CLIENT}
+      - PAYPAL_API_SECRET=${PAYPAL_API_SECRET}
+      - PAYPAL_API=${PAYPAL_API}
+      - ROLE_ADMIN=${ROLE_ADMIN}
+      - ROLE_USER=${ROLE_USER}
+      - RECOVERY_TOKEN=${RECOVERY_TOKEN}
+      - RECOVERY_URI=${RECOVERY_URI}
+      - CLIENT_PORT=${CLIENT_PORT}
+      - PORT=${PORT}
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    networks:
+      - app-network
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"  # Exponer Nginx en el puerto 80 del host
+    volumes:
+     - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
