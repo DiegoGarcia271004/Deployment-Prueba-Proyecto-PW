@@ -23,7 +23,7 @@ export const register = async (req, res) => {
     if (error instanceof UserAlreadyExistError) {
       return res.status(400).json({ message: error.message });
     }
-    console.error(error);
+
     res
       .status(500)
       .json({ message: "Error al registrar el usuario: ", error: error.message });
@@ -188,8 +188,7 @@ export const recoveryPasswordController = async (req, res) => {
       res
         .status(200)
         .json({
-          message: "Ingresa al siguiente enlace para realizar el cambio de contraseña.",
-          url: config.recoveryURL,
+          message: "Solicitud de recuperación enviada.",
         });
     } else {
       res
@@ -201,7 +200,7 @@ export const recoveryPasswordController = async (req, res) => {
     }
   } catch (error) {
     if (error instanceof NotFoundUsers || error instanceof Error)
-      res.status(400).json({ message: error.message });
+      return res.status(400).json({ message: error.message });
 
     res
       .status(500)
@@ -216,7 +215,7 @@ export const resetPasswordController = async (req, res) => {
   const { newPassword } = req.body;
 
   if (!token)
-    return res.status(500).json({ message: "Ha fallado la autenticacion." });
+    return res.status(500).json({ message: "Ha fallado la autenticacion. No se ha podido restablecer la contraseña." });
 
   try {
     await userService.resetPassword(token, newPassword);

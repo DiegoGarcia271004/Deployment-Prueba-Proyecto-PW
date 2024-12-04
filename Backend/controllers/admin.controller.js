@@ -148,20 +148,21 @@ export const recoveryPasswordController = async (req, res) => {
 
   try {
     const token = await adminServices.recoverPassword(email);
-
+    console.log(email);
+    console.log(token);
     if (token) {
-      res.cookie('recoveryToken', token, {
+      res.cookie('recoveryToken', { token }, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         maxAge: 3600000
       });
-      res.status(200).json({ message: 'Ingresa al siguiente enlace para realizar el cambio de contraseña.', url: config.recoveryURL });
+      res.status(200).json({ message: 'Solicitud de recuperación enviada.' });
     } else {
       res.status(500).json({ message: 'La recuperación de la contraseña no pudo ser gestionada o la autenticación ha expirado.' });
     }
   } catch (error) {
     if (error instanceof NotFoundAdmin || error instanceof Error)
-      res.status(400).json({ message: error.message });
+      return res.status(400).json({ message: error.message });
 
     res.status(500).json({ message: 'Ha ocurrido un error al intentar recuperar la contraseña.'});
   }
@@ -178,15 +179,16 @@ export const recoveryPasswordController = async (req, res) => {
 export const resetPasswordController = async (req, res) => {
   const token = req.cookies.recoveryToken;
   const { newPassword } = req.body;
-
+  console.log(token);
+  console.log(newPassword);
   if (!token) 
-    return res.status(500).json({ message: 'Ha fallado la autenticación.' });
+    return res.status(500).json({ message: 'Ha fallado la autenticación. No se ha podido restablecer la contraseña.' });
 
   try {
     await adminServices.resetPassword(token, newPassword);
     res.status(200).json({ message: 'Contraseña actualizada exitosamente.' });
   } catch (error) {
-    if (error instanceof NotFoundUsers)
+    if (error instanceof NotFoundAdmin)
       return res.status(400).json({ message: error.message });
 
     res.status(500).json({ message: 'Ha ocurrido un error al actualizar la contraseña.' });

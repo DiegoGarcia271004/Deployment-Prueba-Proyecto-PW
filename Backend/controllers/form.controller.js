@@ -36,10 +36,10 @@ export const getFormController = async (req, res) => {
  */
 export const addFormController = async (req, res) => {
     const { id } = req.params;
-    const { question, order } = req.body;
+    const { question, image, order } = req.body;
   
     try {
-        const form = await formService.addFormService(id, { question, order });
+        const form = await formService.addFormService(id, { question,image,  order });
         res.status(201).json({ message: 'Pregunta de formulario agregada correctamente.', data: form });
     } catch (error) {
         
@@ -59,12 +59,12 @@ export const addFormController = async (req, res) => {
  */
   export const updateFormController = async (req, res) => {
     const { id } = req.params;
-    const { _id, question, order } = req.body;
+    const { _id, question, image, order } = req.body;
   
     try {
         const form = await formService.updateFormService(id, {
             id: _id,
-            question, order
+            question, image, order
         });
         res.status(201).json({ message: 'Preguntas de formulario actualizada', data: form });
     } catch (error) {

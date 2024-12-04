@@ -29,9 +29,9 @@ export const findFormById = async (id) => {
  * @param {Object} param recibe la data del formulario como un objeto  
  * @returns {Promise<Form>} devuelve el objeto de formulario completo
  */
-export const addForm = async (id, { question, order }) => {
+export const addForm = async (id, { question, image, order }) => {
     const group = await Form.findById(id);
-    group.forms.push({ question, order });
+    group.forms.push({ question, image, order });
     return await group.save();
 }
 
@@ -51,6 +51,7 @@ export const updateForms = async (id, data) => {
         const realID = convertID(_form);
         if (realID === data.id) {
             _form.question = data.question,
+            _form.image = data.image,
             _form.order = data.order
         }
     });
@@ -65,17 +66,10 @@ export const updateForms = async (id, data) => {
  * de forms para poder eliminarlo de la coleccion
  */
 export const deleteForm = async (id, formID) => {
-    
-    const form = await Form.findById(id);
-
-    let IDtoDelete =  null;
-
-    form.forms.forEach((_form) => {
-        const realID = convertID(_form);
-        if (realID === formID)
-            IDtoDelete = realID;
-    });
-
-    form.forms = form.forms.filter(_form => convertID(_form) !== IDtoDelete);
-    form.save();
+    const updatedData = await Form.findByIdAndUpdate(
+        id,
+        { $pull: { forms: { _id: formID } } },
+        { new: true }
+    );
+    return updatedData;
 }

@@ -6,17 +6,25 @@ import config from "../../../config.js";
 import { NavLink, redirect } from "react-router-dom";
 import axios from "axios";
 import { Navigate } from "react-router-dom";
+import useUtil from "../../Hooks/useUtil.jsx";
 
 const LoginFormProvider = () => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showButton, setShowButton] = useState(false);
+  const [password, setPassword] = useState("");  
   const [message, setMessage] = useState("");
-  const [typeUser, setTypeUser] = useState("user");
+  const [yes, setYes] = useState(true);
+  const [showButton, setShowButton] = useState(false);
 
-  const { registerLogin, error, loading } = usePost(
-    `${config.API_URL}/${localStorage.getItem("verify")}/login`
+  const { verifyRole } = useUtil();
+
+  // useEffect(async () => {
+  //   await verifyRole(email);
+  // }, [email]);
+
+  const { authentication: login, error: errorLogin, loading: loadingLogin } = usePost(
+    `${config.API_URL}/${localStorage.getItem('verify')}/login`
   );
+
   const { handleLogin, handleSaveID, handleSaveRole } =
     useContext(LoginContext);
 
@@ -33,38 +41,35 @@ const LoginFormProvider = () => {
   };
 
   const handleSubmit = async (event) => {
+    setMessage("");
+    setYes(true);
     event.preventDefault();
-    localStorage.setItem("verify", "user");
 
-    const verify = await axios.post(
-      `${config.API_URL}/verify`,
-      { email },
-      { headers: { "Content-Type": "application/json" } }
-    );
-    console.log(verify.data.role);
-    if (verify.data.role === "admin") {
-      localStorage.setItem("verify", "admin");
-    }
+    await verifyRole(email);
 
-    const userLogin = await registerLogin({ email, password });
+    const userLogin = await login({ email, password });
 
-    if (error || !userLogin) {
+    if (errorLogin || !userLogin) {
       return;
     }
 
     setMessage(userLogin.message);
 
     if (localStorage.getItem("verify") === "admin") {
+
       handleLogin(userLogin.data.admin, userLogin.data.token);
       handleSaveRole(userLogin.data.admin.role);
       handleSaveID(userLogin.data.admin.id);
+      window.location.href = '/profile';
+
+    } else {
+
+      handleLogin(userLogin.data.user, userLogin.data.token);
+      handleSaveRole(userLogin.data.user.role);
+      handleSaveID(userLogin.data.user.id);
+      window.location.href = "/admin";
     }
-
-    handleLogin(userLogin.data.user, userLogin.data.token);
-    handleSaveRole(userLogin.data.user.role);
-    handleSaveID(userLogin.data.user.id);
-
-    window.location.href = "/profile";
+    localStorage.removeItem('verify');
   };
 
   return (
@@ -114,7 +119,7 @@ const LoginFormProvider = () => {
           ¿Olvidaste tu contraseña?
         </span>
         {showButton && (
-          <NavLink to={"/recovery"}>
+          <NavLink to={'/recovery'} onClick={() => localStorage.setItem('isRecovery', true)}>
             <button type="button" className="reset-password-button">
               Recuperar contraseña
             </button>
@@ -122,8 +127,8 @@ const LoginFormProvider = () => {
         )}
       </div>
       <div className="socialLoginContainer">
-        <button type="submit" className=" button google" disabled={loading}>
-          {loading ? "Iniciando sesion..." : "Iniciar sesion"}
+        <button type="submit" className=" button google" disabled={loadingLogin}>
+          {loadingLogin ? "Iniciando sesion..." : "Iniciar sesion"}
         </button>
         <button class="button google">
           <svg
@@ -151,10 +156,8 @@ const LoginFormProvider = () => {
           Iniciar sesión con Google
         </button>
       </div>
-
-      {message && <p>{message}</p>}
-
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {message && <p style={{  color: yes ? 'green' : 'red' }}>{message}</p>}
+      {errorLogin && <p style={{ color: "red" }}>{errorLogin}</p>}
     </form>
   );
 };

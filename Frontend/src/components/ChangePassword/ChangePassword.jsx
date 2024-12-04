@@ -1,64 +1,91 @@
 import React, { useContext, useEffect, useState } from "react";
 import usePost from "../../Hooks/UsePost";
-import { LoginContext } from "../../Context/LoginContext.jsx";
+import { LoginContext, LoginProvider } from "../../Context/LoginContext.jsx";
 import API_URL from "../../../config.js";
 import './ChangePassword.css'
+import config from "../../../config.js";
+import useUtil from "../../Hooks/useUtil.jsx";
+import useUpdate from "../../Hooks/UseUpdate.jsx";
 
-const ChangePassword = () => {
-    /*QUITAR LO QUE NO SEA NECESARIO YA QUE OCUPE LA PLANTILLA DEL DE REGISTER*/
+const ChangePasswordProvider = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirm, setConfirm] = useState("");
     const [message, setMessage] = useState("");
-    const [isValid, setIsValid] = useState(false);
+    const [isValid, setIsValid] = useState(true);
 
-    const { postData, error, loading } = usePost(`${API_URL}/user/register`);
-    const { user, handleRegister, handleSaveID } = useContext(LoginContext);
+    const { verifyRole } = useUtil();
+    
+    const { user, token, role } = useContext(LoginContext);
+    const { recoverPassword, error, loading } = usePost(`${config.API_URL}/${localStorage.getItem('verify')}`);
+    const { updateData, error: errorUpdate, loading: loadingUpdate } = useUpdate(`${config.API_URL}/${localStorage.getItem('verify')}/change-password`);
 
-    const handleSubmit = async (event) => {
+    const handleUpdate = async (event) => {
         event.preventDefault();
-        setIsValid(false);
         setMessage("");
+        setIsValid(true);
 
-        if (password !== confirm) {
-            setIsValid(!isValid);
-            return;
-        }
-
-        const userRegister = await postData("register", {
-            username: username,
-            email: email,
-            password: password,
-        });
-
-        if (error || !userRegister) {
-            if (error.error && Array.isArray(error.error)) {
-                error.error.forEach((err) => {
-                    console.log("Error: ", err.msg);
-                });
-            } else {
-                console.log("Registro fallido: ", error.message);
+        console.log(localStorage.getItem('verify'));
+        await verifyRole(email);
+        console.log(localStorage.getItem('verify'));
+        if (localStorage.getItem('isRecovery')) {
+            if ((!email && !password)) {
+                setMessage('Se requiere ingreso de correo electronico y contraseña.');
+                setIsValid(false);
+                return;
+            } else if (password !== confirm) {
+                setMessage('Las contraseñas ingresadas no coinciden.');
+                setIsValid(false);
+                return;
+            } if (localStorage.getItem('verify') !== 'user' && localStorage.getItem('verify') !== 'admin') {
+                setMessage('Ha ocurrido un error. Intenta de nuevo.');
+                setIsValid(false);
+                return;
             }
-
-            return;
+    
+            const response = await recoverPassword(email, password);
+    
+            if (error || !response) {
+                setIsValid(false);
+                return;
+            }
+    
+            console.log(response.message);
+            setMessage(response.message);
+        } else {
+            if (!email && !password) {
+                setMessage('Se requiere ingreso de correo electronico y contraseña.');
+                setIsValid(false);
+                return;
+            } else if (password !== confirm) {
+                setMessage('Las contraseñas ingresadas no coinciden.');
+                setIsValid(false);
+                return;
+            } else if (email !== user.email) {
+                setMessage('El correo electrónico ingresado no corresponde al correo electrónico de la sesión.');
+                setIsValid(false);
+                return;
+            } else if (password == user.password) {
+                setMessage('La contraseña nueva debe ser diferente a la anterior.');
+                setIsValid(false);
+                return;
+            } else if (localStorage.getItem('verify') !== 'user' && localStorage.getItem('verify') !== 'admin') {
+                setMessage('Ha ocurrido un error. Intenta de nuevo.');
+                setIsValid(false);
+                return;
+            }
+            console.log(email);
+            console.log(user.email);
+    
+            const response = await updateData(sessionStorage.getItem('id'), { newPassword: password }, token, role);
+            if (errorUpdate || !response) return;
+            setMessage(response.message);
         }
-
-        setMessage(userRegister.message);
-        handleRegister(userRegister.data);
-        handleSaveID(userRegister.data._id);
-
-        console.log("Registro exitoso: ", userRegister.message);
-        console.log("Objeto de usuario registrado: ", userRegister.data);
-        console.log("ID de usuario registrado: ", userRegister.data._id);
-    };
-
-    useEffect(() => {
-        if (user)
-            console.log("Usuario registrado: ", user.username);
-    }, [user]);
+        localStorage.removeItem('verify');
+    }
 
     return (
-        <form className="formContainer-change" onSubmit={handleSubmit}>
+        <form className="formContainer-change" onSubmit={handleUpdate}>
             <div className="headerWrapper-change">
                 <div><img
                     loading="lazy"
@@ -110,45 +137,31 @@ const ChangePassword = () => {
                         required
                     />
                 </div>
-
-                <div className="formField-change">
-                    <input
-                        type="hidden"
-                        id="token"
-                        className="formInput-change"
-                        required
-                    />
-                </div>
             </div>
-
-
             <div className="socialLoginContainer-change">
                 <button type="submit" className="button google" disabled={loading}>
-                    {loading ? "Recuperando..." : "Recuperar contraseña"}
+                    {!localStorage.getItem('isRecovery') ? (loading ? "Recuperando..." : "Recuperar contraseña") : (loadingUpdate ? "Actualizando" : "Actualizar contraseña")}
                 </button>
             </div>
-
-            {message && <p style={{ color: "green" }}>{message}</p>}
-
-            {error && error.message && (
-                <p style={{ color: "red" }}>{error.message}</p>
-            )}
-
-            {error && error.error && (
-                <div>
-                    {error.error.map((err, index) => (
-                        <p key={index} style={{ color: "red" }}>
-                            {"Error: " + err.msg}
-                        </p>
-                    ))}
-                </div>
-            )}
-
-            {isValid && (
-                <p style={{ color: "red" }}>Las contraseñas ingresadas no coinciden</p>
-            )}
+            {message && <p style={{ color: isValid ? "green" : "red"}}>{message}</p>}
+            {error && <p style={{ color: "red" }}>{error}</p>}
+            <div>
+                <button className='btn-back' onClick={() => !localStorage.getItem('isRecovery') ? (window.location.href = '/login') : (localStorage.getItem('verify') ? window.location.href = '/admin' : window.location.href = '/profile')}>
+                    Regresar
+                </button>
+            </div>
         </form>
     );
 };
+
+const ChangePassword = () => {
+    return (
+        <>
+            <LoginProvider>
+                <ChangePasswordProvider/>
+            </LoginProvider>
+        </>
+    )
+}
 
 export default ChangePassword;

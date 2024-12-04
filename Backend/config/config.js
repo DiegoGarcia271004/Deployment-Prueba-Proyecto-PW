@@ -21,5 +21,6 @@ export const config = {
   pass: process.env.EMAIL_PASS,
   hostNodemailer: process.env.EMAIL_HOST,
   recovery: process.env.RECOVERY_TOKEN,
-  recoveryURL: process.env.RECOVERY_URI 
+  recoveryURL: process.env.RECOVERY_URI,
+  client: process.env.CLIENT
 };

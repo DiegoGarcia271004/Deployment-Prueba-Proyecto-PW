@@ -18,11 +18,8 @@ import { config } from '../config/config.js';
 const checklistRouter = express.Router();
 
 checklistRouter.get('/', authenticate, getChecklistController); //TODO funciona ver los checklist con autenticacion 
-//TODO funciona agregar un nuevo checklist con autenticacion y autorizacion
 checklistRouter.post('/add/:id', authenticate, authorizeRole(config.role1), addChecksValidationRules, validate, addCheckController);
-//TODO funciona actualizar checks, para esto se debe enviar el arreglo del front, es decir, que se debe settear lo nuevo en el estado del front
 checklistRouter.put('/update/:id', authenticate, authorizeRole(config.role1), updateChecksValidationRules, validate, updateChecksController);
-//TODO funciona eliminar un check
 checklistRouter.delete('/delete/:id', authenticate, authorizeRole(config.role1), deleteChecksValidationRules, validate, deleteChecksController);
 
 export default checklistRouter;

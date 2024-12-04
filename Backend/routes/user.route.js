@@ -30,7 +30,6 @@ const userRouter = express.Router();
 userRouter.get("/", authenticate, getAllUsers)
 userRouter.post("/register", userRegisterValidationRules, validate, register); //TODO funciona registrar usuario
 userRouter.post("/login", UserLoginValidationRules, validate, login); //TODO funciona logear usuario
-//TODO funciona actualizar progreso de usuario
 userRouter.put(
   "/update/:id",
   authenticate,
@@ -39,7 +38,6 @@ userRouter.put(
   validate,
   update
 );
-//TODO funciona actualizar credenciales de usuario
 userRouter.put(
   "/update-credentials/:id",
   authenticate,
@@ -48,7 +46,6 @@ userRouter.put(
   validate,
   updateCredentials
 );
-//TODO funciona cambiar password de usuario
 userRouter.put(
   "/change-password/:id",
   authenticate,
@@ -57,7 +54,6 @@ userRouter.put(
   validate,
   changePasswordController
 );
-//TODO funciona eliminar usuario por cierre de cuenta
 userRouter.delete(
   "/delete/:id",
   authenticate,
@@ -68,16 +64,12 @@ userRouter.delete(
 );
 userRouter.post(
   "/recover-password",
-  authenticate,
-  authorizeRole(config.role2),
   userRecoveryValidationRules,
   validate,
   recoveryPasswordController
 );
 userRouter.post(
   "/reset-password",
-  authenticate,
-  authorizeRole(config.role2),
   userResetPasswordValidationRules,
   validate,
   resetPasswordController

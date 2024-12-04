@@ -3,7 +3,6 @@ import {
   login,
   updateCredentialsController,
   changePasswordController,
-  deleteAdmin,
   deleteUserByAdmin,
   seeAllUsers,
   recoveryPasswordController,
@@ -14,7 +13,6 @@ import {
   AdminLoginValidationRules,
   AdminUpdateCredentialsValidationRules,
   AdminChangePasswordValidationRules,
-  AdminDeleteValidationRules,
   adminRecoveryValidationRules,
   adminResetPasswordValidationRules,
 } from "../validators/admin.validator.js";
@@ -27,7 +25,7 @@ const adminRouter = express.Router();
 
 adminRouter.post("/login", AdminLoginValidationRules, validate, login); 
 adminRouter.put(
-  "/update/:id",
+  "/update-credentials/:id",
   authenticate,
   authorizeRole(config.role1),
   AdminUpdateCredentialsValidationRules,
@@ -43,14 +41,6 @@ adminRouter.put(
   changePasswordController
 );
 adminRouter.delete(
-  "/delete/:id",
-  authenticate,
-  authorizeRole(config.role1),
-  AdminDeleteValidationRules,
-  validate,
-  deleteAdmin
-);
-adminRouter.delete(
   "/delete-user/:id",
   authenticate,
   authorizeRole(config.role1),
@@ -62,16 +52,20 @@ adminRouter.get(
   "/all-users",
   authenticate,
   authorizeRole(config.role1),
+  validate,
   seeAllUsers
 );
 adminRouter.post(
   "/recover-password",
-  authenticate,
-  authorizeRole(config.role1),
   adminRecoveryValidationRules,
   validate,
   recoveryPasswordController,
 );
-adminRouter.post('/reset-password', authenticate, authorizeRole(config.role1), adminResetPasswordValidationRules, validate, resetPasswordController);
+adminRouter.post(
+  '/reset-password', 
+  adminResetPasswordValidationRules, 
+  validate, 
+  resetPasswordController
+);
 
 export default adminRouter;

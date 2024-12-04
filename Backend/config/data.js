@@ -1,6 +1,7 @@
 import Checklist from "../models/checklist.model.js";
 import Consultant from "../models/consultant.model.js";
 import Form from "../models/form.model.js";
+import Admin from "../models/admin.model.js";
 
 /**
  * initializeData es un metodo que existe unicamente para inicializar 
@@ -14,10 +15,25 @@ export async function initializeData() {
 	const counterChecklist = await Checklist.countDocuments();
 	const counterConsultants = await Consultant.countDocuments();
 	const counterForm = await Form.countDocuments();
+	const counterAdmin = await Admin.countDocuments();
+
+	if (counterAdmin === 0) {
+		const defaultData = {
+			username: 'Administrador',
+			email: 'admin@gmail.com',
+			password: '832A1wEwTG$',
+		};
+
+		try {
+			Admin.create(defaultData);
+		} catch (error) {
+			throw new error;
+		}
+	}
 
 	if (counterChecklist === 0) {
 
-		const defaultData = {
+		const defaultDataChecks = {
 			checks: [
 				{ name: "Paso 1", description: "Formato de Solicitud.", order: 1 },
 				{ name: "Paso 3", description: "Declaración Jurada autorizada por el Ministerio de Salud.", order: 3 },
@@ -33,7 +49,7 @@ export async function initializeData() {
 		};
 
 		try {
-			Checklist.create(defaultData);
+			Checklist.create(defaultDataChecks);
 		} catch (error) {
 			throw new error;
 		}
@@ -63,12 +79,24 @@ export async function initializeData() {
 
 		const defaultDataForm = {
 			forms: [
-				{ question: "Situado en zonas o lugares no expuestos a contaminación.", order: 1 },
-				{ question: "Alrededores y áreas exteriores están limpios, libres de maleza, estancamiento de agua, promontorios de basura y polvo.", order: 2 },
-				{ question: "El equipo se encuentra en condiciones óptimas de funcionamiento.", order: 3 },
-				{ question: "Pisos de materiales que no contaminan los alimentos, facilitanprocesos de limpieza y sanitización, sin daños ni grietas.", order: 4 },
-				{ question: "El área de preparación cumple con las normas de higiene.", order: 5 },
-				{ question: "Techos están en buen estado. Adecuado mantenimiento. No acumulan suciedad. Sin filtración de agua, goteras ni desprendimiento de partículas.", order: 5 },
+				{ question: "Situado en zonas o lugares no expuestos a contaminación.", 
+					image: "https://i.pinimg.com/736x/a5/8b/ac/a58bacafe08366c8a592a91a2db04506.jpg",
+					order: 1 },
+				{ question: "Alrededores y áreas exteriores están limpios, libres de maleza, estancamiento de agua, promontorios de basura y polvo.",
+					image: "https://www.abasturhub.com/img/blog/restaurantes-al-aire-libre-outdooors.jpg",
+					 order: 2 },
+				{ question: "El equipo se encuentra en condiciones óptimas de funcionamiento.", 
+					image: "https://blog.imberacooling.com/hubfs/8_NOVIEMBRE_VOY_A_PONER_UN_RESTAURANTE_COMO_DEBO_REFRIGERAR_MIS_ALIMENTOS_v1.jpg",
+					order: 3 },
+				{ question: "Pisos de materiales que no contaminan los alimentos, facilitan procesos de limpieza y sanitización, sin daños ni grietas.", 
+					image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSia6F2By7LvDRpSPR76g39bFNvn826nhaVLg&s", 
+					order: 4 },
+				{ question: "El área de preparación cumple con las normas de higiene.", 
+					image: "https://theoctopusguide.discefa.com/wp-content/uploads/2021/06/caracteristicas-ideales-que-deben-tener-una-cocina.jpg",
+					order: 5 },
+				{ question: "Techos están en buen estado. Adecuado mantenimiento. No acumulan suciedad. Sin filtración de agua, goteras ni desprendimiento de partículas.", 
+					image: "https://www.materialescalabuig.com/wp-content/uploads/2021/04/islas-restaurante.jpg",
+					order: 5 },
 			]
 		};
 

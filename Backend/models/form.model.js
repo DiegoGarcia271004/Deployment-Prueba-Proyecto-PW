@@ -10,6 +10,11 @@ const valueFormSchema = new mongoose.Schema(
                 required: true,
                 unique: true,
             },
+            image: {
+                type: String,
+                unique: true,
+                default: "Imagen no disponible"
+            },
             order: {
                 type: Number,
                 required: true, 

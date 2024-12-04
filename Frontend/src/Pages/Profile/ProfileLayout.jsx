@@ -28,9 +28,7 @@ const cards = [
   },
 ];
 
-export const ProfileLayout = () => {
-  const progressPercentage = 75;
-
+export const ProfileLayout = () => {  
   return (
     <section className="profileContainer">
       { }
@@ -49,21 +47,6 @@ export const ProfileLayout = () => {
               ))}
             </div>
           </section>
-
-        <section className="progressSection">
-          <h2 className="progressTitle">Tu progreso</h2>
-          <div className="progressChart">
-            <CircularProgressbar
-              value={progressPercentage}
-              text={`${progressPercentage}%`}
-              styles={buildStyles({
-                textColor: "#26364e",
-                pathColor: "#2E415E",
-                trailColor: "#F1F6FC",
-              })}
-            />
-          </div>
-        </section>
       </div>
     </section>
   );

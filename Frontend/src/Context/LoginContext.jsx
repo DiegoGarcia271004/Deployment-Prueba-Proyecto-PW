@@ -17,29 +17,29 @@ export const LoginContext = createContext({
 export const LoginProvider = ({ children }) => {
 
     const [user, setUser] = useState(() => {
-        const savedUser = localStorage.getItem('user');
+        const savedUser = sessionStorage.getItem('user');
         return savedUser ? JSON.parse(savedUser) : null;
     });
-    const [token, setToken] = useState(localStorage.getItem('token') || '');
-    const [role, setRole] = useState(localStorage.getItem('role') || '');
+    const [token, setToken] = useState(sessionStorage.getItem('token') || '');
+    const [role, setRole] = useState(sessionStorage.getItem('role') || '');
 
     useEffect(() => {
         if(user) {
-            localStorage.setItem('user', JSON.stringify(user));
+            sessionStorage.setItem('user', JSON.stringify(user));
         } else {
-            localStorage.removeItem('user');
+            sessionStorage.removeItem('user');
         }
         
         if (token) {
-            localStorage.setItem('token', token);
+            sessionStorage.setItem('token', token);
         } else {
-            localStorage.removeItem('token', token);
+            sessionStorage.removeItem('token', token);
         }
 
         if (role) {
-            localStorage.setItem('role', role);
+            sessionStorage.setItem('role', role);
         } else {
-            localStorage.removeItem('role');
+            sessionStorage.removeItem('role');
         }
     }, [user, token]);
     //deben usarse ambos en un componente proveedor que realice los post para el Login

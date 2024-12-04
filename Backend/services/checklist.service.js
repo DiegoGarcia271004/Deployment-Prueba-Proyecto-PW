@@ -37,6 +37,9 @@ export const updateChecksService = async (id, data) => {
 
   checks.checks.forEach((check) => {
     const realID = check._id.toString().replace(/^new ObjectId\('(.+?)'\)$/, '$1')
+    console.log(realID === data.id);
+    console.log(realID);
+    console.log(data.id);
     if (realID === data.id) 
       checklistToUpdate = check;
   });

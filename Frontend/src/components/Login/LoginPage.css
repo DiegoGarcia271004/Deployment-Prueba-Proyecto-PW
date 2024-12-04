@@ -1,7 +1,10 @@
 .authContainer {
-  background-color: #fff;
-  padding: 0 78px 0 0;
+  background-color: var(--primary-50);
+  padding: 0 200px 0px 0px;
   overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
 }
 
 @media (max-width: 991px) {
@@ -9,8 +12,6 @@
     padding-right: 20px;
   }
 }
-
-
 
 .contentWrapper {
   display: flex;
@@ -29,7 +30,7 @@
   display: flex;
   flex-direction: column;
   line-height: normal;
-  width: 57%;
+  width: 58%;
   margin-left: 0;
 }
 
@@ -45,6 +46,7 @@
   max-width: 100%;
   height: 1024px;
   margin: 0 auto;
+  position: relative;
 }
 
 @media (max-width: 991px) {
@@ -61,7 +63,7 @@
   line-height: normal;
   height: 100vh;
   width: 43%;
-  margin-left: 20px;
+
 }
 
 @media (max-width: 991px) {
@@ -72,18 +74,19 @@
 
 .formContainer {
   display: flex;
-  width: 100%;
+  width: 86%;
   flex-direction: column;
   justify-content: center;
-  align-self: stretch;
+  align-self: str;
   align-items: flex-start;
   margin: auto 0;
+  margin-top: -3em;
 }
 
 @media (max-width: 991px) {
   .formContainer {
     max-width: 100%;
-    margin-top: 40px;
+    margin-top: 30px;
   }
 }
 
@@ -95,7 +98,7 @@
   align-items: center;
   font-family: Raleway, sans-serif;
   justify-content: center;
-  margin-left: 80px;
+  
 }
 
 .loginLink {
@@ -122,13 +125,7 @@
   width: 97px;
   fill: #2e415e;
   margin: 6px 0 0 22px;
-}
-
-@media (max-width: 991px) {
-  .logo {
-    margin-left: 10px;
-  }
-}
+}                                                     
 
 .title {
   color: #000;
@@ -239,7 +236,7 @@
   color: blue;
   cursor: pointer;
   text-decoration: underline;
-  font-family: 'Raleway',sans-serif;
+  font-family: 'Raleway', sans-serif;
 }
 
 .forgot-password-text:hover {
@@ -252,7 +249,7 @@
   background-color: var(--primary-400);
   color: white;
   border: none;
-  font-family: 'Raleway',sans-serif;
+  font-family: 'Raleway', sans-serif;
   border-radius: 5px;
   cursor: pointer;
 }
@@ -267,8 +264,30 @@
   .button.google {
     max-width: 100%;
   }
-}.rightColumn {
+}
+
+.rightColumn {
   display: flex;
   flex-direction: column;
   justify-content: baseline;
 }
+
+@media (max-width: 991px) {
+  .bannerImage {
+    display: none;  
+  }
+
+  .headerWrapper {
+    margin: 0px;
+    
+  }
+
+  .formInput{
+    width: 90%;
+  }
+
+  
+}
+
+
+

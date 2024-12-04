@@ -13,6 +13,7 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
+  margin-top: 16px;
 }
 
 .button-container {
@@ -91,8 +92,8 @@
 
 .consultant-page {
   height: 100vh;
-  display: flex;
+  /*display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: center;*/
 }

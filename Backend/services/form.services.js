@@ -11,7 +11,7 @@ export const getFormService = async () => {
     return form;
 };
 
-export const addFormService = async (id, { question, order }) => {
+export const addFormService = async (id, { question, image, order }) => {
     const form = await formRepository.findFormById(id);
 
     if (!form)
@@ -22,7 +22,7 @@ export const addFormService = async (id, { question, order }) => {
             throw new FormAlreadyExists();
     });
 
-    const newForm = await formRepository.addForm(id, { question, order });
+    const newForm = await formRepository.addForm(id, { question, image, order });
     return newForm.forms.slice(-1)[0];
 }
 

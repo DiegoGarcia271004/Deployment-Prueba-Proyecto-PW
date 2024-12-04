@@ -25,6 +25,7 @@ export const loginAdmin = async ({ email, password }) => {
       id: admin._id,
       username: admin.username,
       role: admin.role,
+      email: admin.email
     },
     token,
   };
@@ -65,7 +66,7 @@ export const recoverPassword = async (email) => {
   if (!admin) throw new NotFoundAdmin();
 
   const token = jwt.sign(
-    { adminID: admin._id },
+    { adminID: admin._id, role: admin.role },
     config.recovery,
     { expiresIn: '1h' }
   );
@@ -73,13 +74,15 @@ export const recoverPassword = async (email) => {
   return token;
 }
 
-export const resetPassword = async (token, newPassword) => {
-  const decoded = jwt.verify(token, config.recovery);
+export const resetPassword = async (auth, newPassword) => {
+  const decoded = jwt.verify(auth.token, config.recovery);
   const adminID = decoded.adminID;
 
   const admin = await adminRepository.findAdminByID(adminID);
-
   if (!admin) throw new NotFoundAdmin();
+
+  const role = decoded.role;
+  if (role !== config.role1) Error('Acceso no autorizado.');
 
   await adminRepository.changePasswordToAdmin(adminID, newPassword);
 }

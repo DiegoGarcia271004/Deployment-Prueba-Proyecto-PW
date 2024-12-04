@@ -49,11 +49,6 @@
     margin: 0 auto;
   }
   
-  @media (max-width: 991px) {
-    .bannerImage {
-      margin-top: 40px;
-    }
-  }
   
   .rightColumn {
     display: flex;
@@ -77,12 +72,6 @@
     margin: auto 0;
   }
   
-  @media (max-width: 991px) {
-    .formContainer {
-      max-width: 100%;
-      margin-top: 40px;
-    }
-  }
   
   .headerWrapper {
     display: flex;
@@ -228,5 +217,23 @@
   .button.google {
     max-width: 100%;
   }
+}
+
+
+@media (max-width: 991px) {
+  .bannerImage {
+    display: none;  
+  }
+
+  .headerWrapper {
+    margin: 0px;
+    
+  }
+
+  .formInput{
+    width: 90%;
+
+  }
+  
 }
 

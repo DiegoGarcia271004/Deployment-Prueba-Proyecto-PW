@@ -66,17 +66,10 @@ export const updateChecklist = async (id, data) => {
  * de checks para poder eliminarlo de la coleccion
  */
 export const deleteCheck = async (id, checkID) => {
-
-    const checklist = await Checklist.findById(id);
-
-    let IDtoDelete = null;
-
-    checklist.checks.forEach((check) => {
-        const realID = convertID(check);
-        if (realID === checkID)
-            IDtoDelete = realID;
-    });
-
-    checklist.checks = checklist.checks.filter(_check => convertID(_check) !== IDtoDelete);
-    checklist.save();
+    const updatedData = await Checklist.findByIdAndUpdate(
+        id,
+        { $pull: { checks: { _id: checkID } } },
+        { new: true }
+    );
+    return updatedData;
 }

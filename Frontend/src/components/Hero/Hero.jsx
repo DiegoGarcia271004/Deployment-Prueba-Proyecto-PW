@@ -23,6 +23,7 @@ const Hero = () => {
           </span>
           <span className="rps-highlight">RPS</span>
         </h1>
+        <h2 className='title-responsive'>FORM COPRS</h2>
       </div>
       <svg
         className="hero-background"

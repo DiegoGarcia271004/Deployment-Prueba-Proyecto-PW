@@ -90,6 +90,7 @@ export const deleteChecksController = async (req, res) => {
   try {
       console.log(checksID);
       const checks = await checkService.deleteChecksService(id, checksID);
+      console.log(checks);
       res.status(201).json({ message: 'Requerimiento eliminado exitosamente.', data: checks });
   } catch (error) {
 

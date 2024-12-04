@@ -15,39 +15,39 @@ export const FetchContext = createContext({
 export const FetchProvider = ({ children }) => {
     
     const [checklist, setCheklist] = useState(() => {
-        const savedChecklist = localStorage.getItem('checklist');
+        const savedChecklist = sessionStorage.getItem('checklist');
         return savedChecklist ? JSON.parse(savedChecklist) : [];
     });
-    const [form, setForm] = useState(localStorage.getItem('form'), []);
-    const [consultants, setConsultants] = useState(localStorage.getItem('consultant'), []);
+    const [form, setForm] = useState(sessionStorage.getItem('form'), []);
+    const [consultants, setConsultants] = useState(sessionStorage.getItem('consultant'), []);
     const [users, setUsers] = useState(() => {
-        const savedUsers = localStorage.getItem('users');
+        const savedUsers = sessionStorage.getItem('users');
         return savedUsers ? JSON.parse(savedUsers) : [];
     });
 
     useEffect(() => {
 
         if (checklist) {
-            localStorage.setItem('checklist', JSON.stringify(checklist));
+            sessionStorage.setItem('checklist', JSON.stringify(checklist));
         } else {
-            localStorage.removeItem('checklist');
+            sessionStorage.removeItem('checklist');
         }
 
         if (form) {
-            localStorage.setItem('form', form);
+            sessionStorage.setItem('form', form);
         } else {
-            localStorage.removeItem('form');
+            sessionStorage.removeItem('form');
         }
 
         if (consultants) {
-            localStorage.setItem('consultant', consultants);
+            sessionStorage.setItem('consultant', consultants);
         } else {
-            localStorage.removeItem('consultant');
+            sessionStorage.removeItem('consultant');
         }
         if (users) {
-            localStorage.setItem('users', JSON.stringify(users));
+            sessionStorage.setItem('users', JSON.stringify(users));
         } else {
-            localStorage.removeItem('users');
+            sessionStorage.removeItem('users');
         }
 
     }, [checklist, form, consultants, users]);

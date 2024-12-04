@@ -3,11 +3,11 @@ import './FormPage.css';
 import { ProgressSteps } from './ProgressSteps';
 import { InspectionItem } from './InspectionItem';
 
-export const FormPage = ({ steps, currentStep, imageSrc, questions, responses, onNext, onBack, validationMessage, onOptionSelect }) => {
+export const FormPage = ({ steps, currentStep, imageSrc, questions, responses, onNext, onBack, validationMessage, onOptionSelect, onFinish }) => {
   return (
     <div className="pageContainer">
       <main className="formContainer">
-        <ProgressSteps currentStep={currentStep}/>
+        <ProgressSteps currentStep={currentStep} />
 
         <div className="imageContainer">
           <img src={imageSrc} alt="Inspection area" className="inspectionImage" />
@@ -19,22 +19,16 @@ export const FormPage = ({ steps, currentStep, imageSrc, questions, responses, o
               key={index}
               description={question.question}
               selectedOption={responses[index]}
-              onOptionSelect={(response) => onOptionSelect(index, response)} 
+              onOptionSelect={(response) => onOptionSelect(index, response)}
+              image={question.image}
             />
           ))}
         </div>
 
         {validationMessage && <div className="validationMessage">{validationMessage}</div>}
 
-        <div className="navigationButtons">
-          {currentStep > 1 && (
-            <button className="backButton" onClick={onBack}>
-              Regresar
-            </button>
-          )}
-          <button className="nextButton" onClick={onNext}>
-            Siguiente
-          </button>
+        <div className="finishedbtn">
+          <button className="finbtn" onClick={onFinish}>Terminar</button>
         </div>
       </main>
     </div>

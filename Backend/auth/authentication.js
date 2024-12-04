@@ -25,7 +25,7 @@ export const authenticate = (req, res, next) => {
 
     jwt.verify(token, secret, (err, decoded) => {
         if (err) 
-            return res.status(403).json({ message: 'Autenticación invalida o expirada'});
+            return res.status(403).json({ message: 'Autenticación invalida o expirada.'});
 
         req.user = {
             id: decoded.id,

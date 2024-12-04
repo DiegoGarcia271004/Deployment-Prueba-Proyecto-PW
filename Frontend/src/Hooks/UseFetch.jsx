@@ -5,6 +5,7 @@ const useFetch = (url, token, role) => {
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [isAuth, setIsAuth] = useState(true);
 
     useEffect(() => {
 
@@ -28,6 +29,10 @@ const useFetch = (url, token, role) => {
                     const error = await response.json();
                     setError(error.message);
                     setData(null);
+
+                    if (response.status == 403) {
+                        setIsAuth(false);
+                    }
                     return;
                 }
 
@@ -49,7 +54,7 @@ const useFetch = (url, token, role) => {
 
     }, [url]);
 
-    return { data, error, loading };
+    return { data, error, loading, isAuth, setIsAuth };
 }
 
 export default useFetch;

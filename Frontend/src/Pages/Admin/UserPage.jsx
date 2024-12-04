@@ -56,7 +56,13 @@ const UserPageProvider = () => {
     handleFetchUsers(users.filter((user) => user.username !== response.data));
   };
 
-  if (role !== 'admin') return <Unauthorized/> //TODO Diego pone aqui el footer y lo demas
+  if (role !== 'admin') return (
+    <>
+      <Navigation/>
+      <Unauthorized/>
+      <Footer/>
+    </>
+  );
   if (isLoading) return <div>Cargando...</div>;
 
   return (

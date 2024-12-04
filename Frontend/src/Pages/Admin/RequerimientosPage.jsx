@@ -11,6 +11,8 @@ import './RequerimientosPage.css';
 import { LoginContext, LoginProvider } from "../../Context/LoginContext";
 import config from '../../../config';
 import Unauthorized from "../../Components/Unauthorized/Unauthorized";
+import AdminNavBar from "../../components/Navigation/AdminNavBar";
+import Footer from "../../components/Footer/Footer";
 
 const RequerimientosPageProvider = () => {
 
@@ -104,8 +106,8 @@ const RequerimientosPageProvider = () => {
   if (isLoading) return <div>Cargando...</div>;
   if (errorFetch) return (
     <>
-      <Navigation/>
-      <Unauthorized/>
+      <AdminNavBar/>
+      <p>[errorFetch]</p>
       <Footer/>
     </>
   );
@@ -147,7 +149,9 @@ const RequerimientosPage = () => {
     <>
       <LoginProvider>
         <FetchProvider>
+          <AdminNavBar/>
           <RequerimientosPageProvider/>
+          <Footer/>
         </FetchProvider>
       </LoginProvider>
     </>

@@ -33,7 +33,7 @@ const ConsultorTable = ({ consultants, onEdit, onDelete }) => {
               <td>{consultor.email}</td>
               <td>{consultor.phone}</td>
             </tr>
-          )) : <p>No hay consultores disponibles...</p>}
+          )) : <tr><p>No hay consultores disponibles...</p></tr> }
         </tbody>
       </table>
     </div>

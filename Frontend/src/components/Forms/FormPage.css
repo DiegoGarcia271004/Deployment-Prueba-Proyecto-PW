@@ -57,18 +57,13 @@
   text-align: left;
 }
 
-.navigationButtons {
-  display: flex;
-  justify-content: space-between;
+
+.finishedbtn{
+  justify-content: center;
   align-items: center;
-  margin-top: 24px;
-  width: 100%;
-  padding: 16px;
-  box-sizing: border-box;
 }
 
-.backButton,
-.nextButton {
+.finbtn{
   display: inline-block;
   width: 120px;
   padding: 12px;
@@ -81,24 +76,17 @@
   transition: all 0.3s ease;
 }
 
-.backButton {
-  background-color: #ffffff;
-  border: 1px solid;
-  color: #26364e;
-}
-
-.backButton:hover {
-  background-color: #f0f5fc;
-}
-
-.nextButton {
+.finbtn {
   background-color: #26364e;
   color: #ffffff;
   border: none;
 }
 
-.nextButton:hover {
+.finbtn:hover {
   background-color: #1a2230;
 }
+
+
+
 
 

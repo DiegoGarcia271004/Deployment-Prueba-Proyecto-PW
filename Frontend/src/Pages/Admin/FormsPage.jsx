@@ -13,6 +13,7 @@ import config from "../../../config";
 import usePost from "../../Hooks/UsePost";
 import useUpdate from "../../Hooks/UseUpdate";
 import useDelete from "../../Hooks/UseDelete";
+import AdminNavBar from "../../components/Navigation/AdminNavBar";
 
 const FormsPageProvider = () => {
 
@@ -48,6 +49,7 @@ const FormsPageProvider = () => {
     
     let body = {
       question: formItem.description,
+      image: formItem.image,
       order: formItem.order
     };
 
@@ -109,7 +111,7 @@ const FormsPageProvider = () => {
   if (isLoading) return <div>Cargando...</div>;
   if (errorFetch) return (
     <>
-      <Navigation/>
+      <AdminNavBar/>
       <Unauthorized/>
       <Footer/>
     </>
@@ -117,7 +119,7 @@ const FormsPageProvider = () => {
 
   return (
     <>
-      <Navigation/>
+      <AdminNavBar/>
       <div className="forms-page">
       <div className="forms-header">
         <h1 className="forms-title">Preguntas</h1>

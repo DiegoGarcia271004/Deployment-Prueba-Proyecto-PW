@@ -3,21 +3,30 @@ import "./FormsForm.css";
 
 const FormsForm = ({ onSubmit, formData, onCancel, isAdding }) => {
   const [description, setDescription] = useState("");
+  const [image, setImage] = useState("");
   const [order, setOrder] = useState("");
 
   useEffect(() => {
     if (formData) {
       setDescription(formData.question);
       setOrder(formData.order);
+      setImage(formData.image);
     } else if (isAdding) {
       setDescription("");
       setOrder("");
+      setImage("");
     }
   }, [formData, isAdding]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let form = { description, order };
+    let form = null;
+    console.log(formData);
+    if (!image) {
+      form = { description, image: "Imagen no disponible", order };
+    } else {
+      form = { description, image, order };
+    }
     if (!isAdding) {
       form = { ...form, id: formData._id };
     }
@@ -39,6 +48,12 @@ const FormsForm = ({ onSubmit, formData, onCancel, isAdding }) => {
         value={order}
         onChange={(e) => setOrder(e.target.value)}
         required
+      />
+      <input
+        type="text"
+        placeholder="URL de la imagen (Opcional)"
+        value={image}
+        onChange={(e) => setImage(e.target.value)}
       />
       <div className="forms-form-buttons">
         <button type="submit">{isAdding ? "Agregar" : "Guardar"}</button>

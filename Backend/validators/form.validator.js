@@ -1,5 +1,4 @@
 import { body, param } from "express-validator";
-import mongoose from "mongoose";
 
 export const addFormValidatorRules = [
     param("id")
@@ -10,6 +9,33 @@ export const addFormValidatorRules = [
     body("question")
         .notEmpty()
         .withMessage('Se requiere agregar la pregunta al formulario'),
+    body('image')
+        .optional()
+        .isString()
+        .withMessage('Se requiere un enlace en formato válido.')
+        .custom((image) => {
+            // const validExtensions = ['.jpg', '.jpeg', '.png'];
+
+            if (image === 'Imagen no disponible') 
+                return true;
+
+            function isURL(image) {
+                try {
+                    new URL(image);
+                    return true;
+                } catch {
+                    return false;
+                }
+            };
+
+            if (!isURL(image)) 
+                throw new Error('El campo imagen debe ser una URL válida.');
+            
+            // if (!validExtensions.includes(`.${extension}`)) 
+            //     throw new Error('La URL debe apuntar a una imagen válida (jpg, jpeg, png).');
+
+            return true; 
+        }),
     body("order")
         .notEmpty()
         .withMessage('Se requiere un numero de orden')
@@ -26,6 +52,33 @@ export const updateFormValidationRules = [
     body("question")
         .notEmpty()
         .withMessage('Se requiere agregar la pregunta al formulario'),
+    body('image')
+        .optional()
+        .isString()
+        .withMessage('Se requiere un enlace en formato válido.')
+        .custom((image) => {
+            // const validExtensions = ['.jpg', '.jpeg', '.png'];
+
+            if (image === 'Imagen no disponible') 
+                return true;
+
+            function isURL(image) {
+                try {
+                    new URL(image);
+                    return true;
+                } catch {
+                    return false;
+                }
+            };
+
+            if (!isURL(image)) 
+                throw new Error('El campo imagen debe ser una URL válida.');
+            
+            // if (!validExtensions.includes(`.${extension}`)) 
+            //     throw new Error('La URL debe apuntar a una imagen válida (jpg, jpeg, png).');
+
+            return true; 
+        }),
     body("order")
         .notEmpty()
         .withMessage('Se requiere un numero de orden')

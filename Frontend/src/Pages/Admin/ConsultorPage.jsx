@@ -7,39 +7,57 @@ import usePost from "../../Hooks/UsePost";
 import useDelete from "../../Hooks/UseDelete";
 import useUpdate from "../../Hooks/UseUpdate";
 import config from "../../../config";
-import './ConsultorPage.css';
+import "./ConsultorPage.css";
 import { LoginContext, LoginProvider } from "../../Context/LoginContext";
 import Unauthorized from "../../components/Unauthorized/Unauthorized";
 import Navigation from "../../components/Navigation/Navigation";
 import Footer from "../../components/Footer/Footer";
 import { NavLink } from "react-router-dom";
 import "./ConsultorPage.css";
+import AdminNavBar from "../../components/Navigation/AdminNavBar";
 
 const ConsultantPageProvider = () => {
-  
   const { token, role } = useContext(LoginContext);
-  const { consultants, handleFetchConsultants, getID } = useContext(FetchContext);
-  
-  const { data, error: errorFetch, loading: loadingFetch } = useFetch(`${config.API_URL}/consultant/`, token, role);
-  const { postData, error: errorAdd, loading: loadingAdd } = usePost(`${config.API_URL}/consultant/add`);
-  const { updateData, error: errorUpdate, loading: loadingUpdate } = useUpdate(`${config.API_URL}/consultant/update`);
-  const { deleteData, error: errorDelete, loading: loadingDelete } = useDelete(`${config.API_URL}/consultant/delete`);
+  const { consultants, handleFetchConsultants, getID } =
+    useContext(FetchContext);
+
+  const {
+    data,
+    error: errorFetch,
+    loading: loadingFetch,
+  } = useFetch(`${config.API_URL}/consultant/`, token, role);
+  const {
+    postData,
+    error: errorAdd,
+    loading: loadingAdd,
+  } = usePost(`${config.API_URL}/consultant/add`);
+  const {
+    updateData,
+    error: errorUpdate,
+    loading: loadingUpdate,
+  } = useUpdate(`${config.API_URL}/consultant/update`);
+  const {
+    deleteData,
+    error: errorDelete,
+    loading: loadingDelete,
+  } = useDelete(`${config.API_URL}/consultant/delete`);
 
   const [selectedConsultor, setSelectedConsultor] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-
     if (!loadingFetch) setIsLoading(loadingFetch);
 
     if (errorFetch) return;
 
     if (data) {
-      handleFetchConsultants(data.consultants[0]?.consultants, data.consultants[0]._id);
+      handleFetchConsultants(
+        data.consultants[0]?.consultants,
+        data.consultants[0]._id
+      );
     }
   }, [data, errorFetch, loadingFetch]);
-
 
   const handleAdd = () => {
     setSelectedConsultor(null);
@@ -47,39 +65,52 @@ const ConsultantPageProvider = () => {
   };
 
   const handleSave = async (consultor) => {
-
     let body = {
       username: consultor.username,
       email: consultor.email,
       phone: consultor.phone,
-      price: consultor.price
+      price: consultor.price,
     };
 
     if (isAdding) {
-        setIsLoading(loadingAdd);
+      setIsLoading(loadingAdd);
 
-        const response = await postData(getID('consultantsID'), body, token, role);
+      const response = await postData(
+        getID("consultantsID"),
+        body,
+        token,
+        role
+      );
 
-        if (errorAdd || !response)
-          return;
+      if (errorAdd || !response) return;
 
-        console.log(response.message);
-        handleFetchConsultants([...consultants, response.data], getID('consultantsID')); 
+      console.log(response.message);
+      handleFetchConsultants(
+        [...consultants, response.data],
+        getID("consultantsID")
+      );
     } else {
-
       setIsLoading(loadingUpdate);
 
       body = {
         ...body,
-        _id: consultor.id
+        _id: consultor.id,
       };
 
-      const response = await updateData(getID('consultantsID'), body, token, role);
+      const response = await updateData(
+        getID("consultantsID"),
+        body,
+        token,
+        role
+      );
 
       if (errorUpdate || !response) return;
 
       console.log(response.message);
-      handleFetchConsultants(response.consultants.consultants, getID('consultantsID'));
+      handleFetchConsultants(
+        response.consultants.consultants,
+        getID("consultantsID")
+      );
     }
     setSelectedConsultor(null);
     setIsAdding(false);
@@ -94,32 +125,45 @@ const ConsultantPageProvider = () => {
     setIsLoading(loadingDelete);
 
     const body = {
-      consultantID: id
+      consultantID: id,
     };
 
-    const response = await deleteData(getID('consultantsID'), body, token, role);
+    const response = await deleteData(
+      getID("consultantsID"),
+      body,
+      token,
+      role
+    );
 
     if (errorDelete || !response) return;
 
     console.log(response.message);
     console.log(response.data);
-    handleFetchConsultants(response.data.consultants, getID('consultantsID'));
+    handleFetchConsultants(response.data.consultants, getID("consultantsID"));
   };
 
-  if (role !== 'admin') return <Unauthorized/> //TODO Diego aqui pone el footer y lo demas 
+  if (role !== "admin")
+    return (
+      <>
+        <Navigation />
+        <Unauthorized />
+        <Footer />
+      </>
+    );
   if (isLoading) return <div>Cargando...</div>;
 
-  if (errorFetch) return(
-    <>
-      <Navigation/>
-      <Unauthorized/>
-      <Footer/>
-    </>
-  );
+  if (errorFetch)
+    return (
+      <>
+        <Navigation />
+        <Unauthorized />
+        <Footer />
+      </>
+    );
 
   return (
     <>
-    <Navigation/>
+      <AdminNavBar />
       <div className="consultant-page">
         <div className="consultor-header">
           <h1 className="consultor-title">Consultores</h1>
@@ -136,9 +180,9 @@ const ConsultantPageProvider = () => {
             isAdding={isAdding}
           />
         )}
-      {errorAdd && <p style={{ color: 'red' }}>{errorAdd}</p>}
-      {errorUpdate && <p style={{ color: 'red' }}>{errorUpdate}</p>}
-      {errorDelete && <p style={{ color: 'red' }}>{errorDelete}</p>}
+        {errorAdd && <p style={{ color: "red" }}>{errorAdd}</p>}
+        {errorUpdate && <p style={{ color: "red" }}>{errorUpdate}</p>}
+        {errorDelete && <p style={{ color: "red" }}>{errorDelete}</p>}
 
         <div className="table-container">
           <ConsultorTable
@@ -163,11 +207,11 @@ const ConsultantPage = () => {
     <>
       <LoginProvider>
         <FetchProvider>
-          <ConsultantPageProvider/>
+          <ConsultantPageProvider />
         </FetchProvider>
       </LoginProvider>
     </>
-  )
-}
+  );
+};
 
 export default ConsultantPage;

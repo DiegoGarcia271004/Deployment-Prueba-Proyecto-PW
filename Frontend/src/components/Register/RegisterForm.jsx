@@ -16,7 +16,7 @@ const RegisterFormProvider = () => {
 
   const { user, handleLogin, handleSaveID, handleSaveRole } =
     useContext(LoginContext);
-  const { registerLogin, error, loading } = usePost(
+  const { authentication: register, error, loading } = usePost(
     `${config.API_URL}/user/register`
   );
 
@@ -30,7 +30,7 @@ const RegisterFormProvider = () => {
       return;
     }
 
-    const userRegister = await registerLogin({ username, email, password });
+    const userRegister = await register({ username, email, password });
 
     if (error || !userRegister) {
       console.error(error);
@@ -42,13 +42,7 @@ const RegisterFormProvider = () => {
     handleSaveID(userRegister.data.user.id);
     handleSaveRole(userRegister.data.user.role);
 
-    console.log("Registro exitoso: ", userRegister.message);
-    console.log("Objeto de usuario registrado: ", userRegister.data);
-    console.log("ID de usuario registrado: ", userRegister.data._id);
-
-    //TODO Diego aqui pone redireccionar a la pagina de usuario directamente, ya esta autenticado uun usuario registrado tambien
-    //sera como hacer un login por primera vez
-    window.location.href = "/login";
+    window.location.href = "/profile";
   };
 
   useEffect(() => {

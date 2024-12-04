@@ -1,6 +1,7 @@
 import React from "react";
 import Card from "../../components/Card/Card";
 import "../Profile/ProfileLayout.css";
+import "./AdminDashboard.css";
 import { redirect } from "react-router-dom";
 
 const cards = [
@@ -8,21 +9,21 @@ const cards = [
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNVR6QMd3PBAU8yoWl8nlLKYoMOTF7zqH_bQ&s",
     title: "Administrar Usuarios",
-    description: "Administra los usuarios de la página web",
+    description: "Vista de usuarios",
     redirect: "/admin/users",
   },
   {
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOsbNuCo9YMBkKk4khUq3XdI2dDZhpLrh2rA&s",
     title: "Administrar Consultores",
-    description: "Small and Concise headline",
+    description: "Operaciones con consultores",
     redirect: "/admin/consultants",
   },
   {
     image:
       "https://codideep.com/img/blogpost/imagenportada/202003020000001.png",
       title: "Administrar Preguntas",
-      description: "Administra las preguntas que se les muestra a los usuarios",
+      description: "Preguntas mostradas a los usuarios",
       redirect: "/admin/formPage"
   },
 ];
@@ -34,7 +35,7 @@ export const AdminMenuLayout = () => {
       <section className="profileHeader">
         <div className="headerBackground" />
         <div className="headerContent">
-          <button className="changePhotoButton">Cambiar foto</button>
+          <h1 className="user-title">Bienvenido al Panel de usuario administrador</h1>
         </div>
       </section>
 
