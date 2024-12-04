@@ -1,14 +1,26 @@
-# Etapa 1: Construcción del frontend
-FROM node:20-alpine AS builder
-WORKDIR /app
+# Imagen base de Node.js
+FROM node:16
+
+# Establece el directorio de trabajo
+WORKDIR /usr/src/app
+
+# Copia el package.json y package-lock.json
 COPY package*.json ./
-RUN npm install --production
+
+# Instala las dependencias
+RUN npm install
+
+# Copia el resto de los archivos del proyecto
 COPY . .
+
+# Construye la aplicación para producción
 RUN npm run build
 
-# Etapa 2: Servir la aplicación con Nginx
-FROM nginx:1.25-alpine
-COPY --from=builder /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Instala un servidor para servir los archivos estáticos
+RUN npm install -g serve
+
+# Expone el puerto 80
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+
+# Comando para ejecutar la aplicación
+CMD ["serve", "-s", "build", "-l", "80"]
