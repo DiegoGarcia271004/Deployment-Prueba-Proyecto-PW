@@ -14,7 +14,7 @@ import config from "../../config";
 import useFetch from "../Hooks/UseFetch";
 
 export const MainPage = () => {
-  const { role, token } = useContext(LoginContext);
+  const { role, token, user } = useContext(LoginContext);
   const { data, error, loading } = useFetch(
     `${config.API_URL}/checklist/`,
     token,
@@ -23,7 +23,7 @@ export const MainPage = () => {
 
   return (
     <>
-      {error ? (
+      {error || !user ? (
         <Navigation />
       ) : role === "admin" ? (
         <AdminNavBar />
