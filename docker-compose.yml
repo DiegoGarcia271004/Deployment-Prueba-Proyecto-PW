@@ -41,7 +41,7 @@ services:
     ports:
       - "8080:80"  # Mapea el puerto 80 del contenedor al 8080 en el host
     volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf  # Monte el archivo de configuración
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf  # Monte el archivo de configuración
       - ./frontend/dist:/usr/share/nginx/html        # Monte la carpeta con los archivos estáticos
     depends_on:
       - frontend
